@@ -124,47 +124,47 @@ spec:
           ci: ${{ parameters.ci }}
           sourceControl: github.com
 
-    - id: ciTemplate
-      name: Generating the CI Component
-      action: fetch:template
-      input:
-        url: ${{ parameters.ci }}
-        copyWithoutTemplating:
-          - .github/workflows/
-        values:
-          orgName: ${{ parameters.orgName }}
-          repoName: ${{ parameters.repoName }}
-          owner: ${{ parameters.owner }}
-          system: ${{ parameters.system }}
-          applicationType: api
-          description: ${{ parameters.description }}
-          namespace: ${{ parameters.namespace }}
-          imageUrl: ${{ parameters.imageUrl }}
-          imageBuilder: s2i-nodejs
-          imageRepository: ${{ parameters.imageRepository }}
-          port: ${{ parameters.port }}
-          ci: ${{ parameters.ci }}
-          sourceControl: github.com
+    # - id: ciTemplate
+    #   name: Generating the CI Component
+    #   action: fetch:template
+    #   input:
+    #     url: ${{ parameters.ci }}
+    #     copyWithoutTemplating:
+    #       - .github/workflows/
+    #     values:
+    #       orgName: ${{ parameters.orgName }}
+    #       repoName: ${{ parameters.repoName }}
+    #       owner: ${{ parameters.owner }}
+    #       system: ${{ parameters.system }}
+    #       applicationType: api
+    #       description: ${{ parameters.description }}
+    #       namespace: ${{ parameters.namespace }}
+    #       imageUrl: ${{ parameters.imageUrl }}
+    #       imageBuilder: s2i-nodejs
+    #       imageRepository: ${{ parameters.imageRepository }}
+    #       port: ${{ parameters.port }}
+    #       ci: ${{ parameters.ci }}
+    #       sourceControl: github.com
 
-    - id: catalogTemplate
-      name: Generating the Catalog Info Component
-      action: fetch:template
-      input:
-        url: ../../../skeletons/catalog-info/
-        values:
-          orgName: ${{ parameters.orgName }}
-          repoName: ${{ parameters.repoName }}
-          owner: ${{ parameters.owner }}
-          system: ${{ parameters.system }}
-          applicationType: api
-          description: ${{ parameters.description }}
-          namespace: ${{ parameters.namespace }}
-          imageUrl: ${{ parameters.imageUrl }}
-          imageBuilder: s2i-nodejs
-          imageRepository: ${{ parameters.imageRepository }}
-          port: ${{ parameters.port }}
-          ci: ${{ parameters.ci }}
-          sourceControl: github.com
+    # - id: catalogTemplate
+    #   name: Generating the Catalog Info Component
+    #   action: fetch:template
+    #   input:
+    #     url: ../../../skeletons/catalog-info/
+    #     values:
+    #       orgName: ${{ parameters.orgName }}
+    #       repoName: ${{ parameters.repoName }}
+    #       owner: ${{ parameters.owner }}
+    #       system: ${{ parameters.system }}
+    #       applicationType: api
+    #       description: ${{ parameters.description }}
+    #       namespace: ${{ parameters.namespace }}
+    #       imageUrl: ${{ parameters.imageUrl }}
+    #       imageBuilder: s2i-nodejs
+    #       imageRepository: ${{ parameters.imageRepository }}
+    #       port: ${{ parameters.port }}
+    #       ci: ${{ parameters.ci }}
+    #       sourceControl: github.com
 
     - id: publish
       name: Publishing to the Source Code Repository
@@ -181,6 +181,18 @@ spec:
       input:
         repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
         catalogInfoPath: /catalog-info.yaml
+
+    - id: createArgocdResources
+      name: Create the ArgoCD Resources
+      action: argocd:create-resources
+      input:
+        appName: ${{ parameters.repoName }}
+        # Hardcoded value because this is kept as a secret on the server to allow forks to easily change the value
+        argoInstance: https://openshift-gitops-server-openshift-gitops.apps.rosa.e5n9l5l2t8z7q0d.qnbq.p3.openshiftapps.com
+        namespace: ${{ parameters.namespace }}
+        repoUrl: ${{ steps.publish.output.remoteUrl }}
+        labelValue: ${{ parameters.repoName }}
+        path: manifests/base
 
   output:
     links:
