@@ -14,7 +14,7 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - "${{ values.repoName}}-apps.rosa.e5n9l5l2t8z7q0d.qnbq.p3.openshiftapps.com"
+        - "${{ values.hostUrl}}-apps.rosa.e5n9l5l2t8z7q0d.qnbq.p3.openshiftapps.com"
       secretName: ${{ values.repoName }}-tls
   rules:
   - host: ${{ values.hostUrl }}-apps.rosa.e5n9l5l2t8z7q0d.qnbq.p3.openshiftapps.com
