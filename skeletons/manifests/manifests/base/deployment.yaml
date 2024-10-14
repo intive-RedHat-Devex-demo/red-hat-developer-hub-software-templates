@@ -13,6 +13,9 @@ spec:
         app: ${{ values.repoName }}
         app.kubernetes.io/component: backstage
         backstage.io/kubernetes-id: ${{ values.namespace }}
+        argocd.argoproj.io/instance: ${{ values.repoName }}
+        argocd/app-name: ${{ values.repoName }}
+        argocd/app-selector: ${{ values.repoName }}
     spec:
       containers:
         - name: ${{ values.repoName }}
