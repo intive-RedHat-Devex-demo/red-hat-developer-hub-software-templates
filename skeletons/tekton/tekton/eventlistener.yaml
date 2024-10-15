@@ -10,7 +10,7 @@ spec:
   triggers:
     - bindings:
         - kind: ClusterTriggerBinding
-          ref: github-push
+          ref: github-pull-request
       interceptors:
         - params:
             - name: eventTypes
