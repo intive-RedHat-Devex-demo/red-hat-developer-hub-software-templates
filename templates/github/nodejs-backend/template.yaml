@@ -257,7 +257,7 @@ spec:
       input:
         repoUrl: '${{ steps.publish.output.remoteUrl }}'
         webhookUrl: >-
-          webhook-${{ parameters.repoName }}-el-demo-dev.apps.rosa.e5n9l5l2t8z7q0d.qnbq.p3.openshiftapps.com
+          https://webhook-${{ parameters.repoName }}-el-demo-dev.apps.rosa.e5n9l5l2t8z7q0d.qnbq.p3.openshiftapps.com
         events:
           - push
           - pull_request
