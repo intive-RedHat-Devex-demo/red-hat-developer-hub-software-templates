@@ -25,8 +25,7 @@ metadata:
     {%- if values.ci == "../../../skeletons/tekton/" %}
     tektonci/build-namespace: ${{ values.namespace }}
     {%- endif %}
-    backstage.io/kubernetes-id: ${{ name }}
-    argocd/app-name: ${{ name }}
+    backstage.io/kubernetes-id: ${{ name }}    
     backstage.io/techdocs-ref: dir:.
     {%- if values.sourceControl == "gitlab.com" %}
     gitlab.com/project-slug: ${{ values.orgName }}/${{ values.repoName }}
