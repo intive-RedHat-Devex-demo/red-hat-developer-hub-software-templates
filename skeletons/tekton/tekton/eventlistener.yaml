@@ -3,7 +3,7 @@ kind: EventListener
 metadata:
   name: ${{ values.repoName }}-el
   namespace: ${{ values.namespace }}
-labels:
+  labels:
     janus-idp.io/tekton: ${{ values.repoName }}
 spec:
   serviceAccountName: pipeline
