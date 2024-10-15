@@ -14,7 +14,7 @@ spec:
       interceptors:
         - params:
             - name: eventTypes
-              value: ['push']
+              value: ['pull_request']
           ref:
             name: github
         - params:
