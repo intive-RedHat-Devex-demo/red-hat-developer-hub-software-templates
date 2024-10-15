@@ -59,7 +59,7 @@ spec:
         - imageUrl
         - hostUrl
       properties:
-       imageBuilder:
+        imageBuilder:
           title: Image Builder
           type: string
           description: The Source-To-Image (S2I) builder to use
