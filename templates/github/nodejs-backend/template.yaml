@@ -51,18 +51,18 @@ spec:
             catalogFilter:
               kind:
                 - System
-        port:
-          title: Port
-          type: number
-          default: 3000
-          description: Override the port exposed for the application
-    - title: Provide information about the ArgoCD deployment
+        
+    - title: Provide information about the CI/CD deployment
       required:
         - imageRepository
         - namespace
         - imageUrl
         - hostUrl
       properties:
+       imageBuilder:
+          title: Image Builder
+          type: string
+          description: The Source-To-Image (S2I) builder to use
         imageRepository:
           title: Select a registry
           type: string
@@ -86,6 +86,11 @@ spec:
           title: Host URL
           type: string
           description: The external facing host URL
+        port:
+          title: Port
+          type: number
+          default: 3000
+          description: Override the port exposed for the application
   steps:
     - id: manifestsTemplate
       name: Generating the Manifests Component
@@ -124,6 +129,31 @@ spec:
           imageRepository: ${{ parameters.imageRepository }}
           port: ${{ parameters.port }}
           ci: ${{ parameters.ci }}
+          sourceControl: github.com
+          
+    - id: merge
+      name: Merge YAML
+      action: roadiehq:utils:merge
+      input:
+        path: ${{ parameters.catalogInfoPath }}
+        content:
+          metadata:
+            annotations:
+              tektonci/build-namespace: ${{ parameters.namespace }}
+
+    - id: ciTemplate
+      name: Generating the CI Component
+      action: fetch:template
+      input:
+        url: ../../../skeletons/tekton/
+        values:
+          orgName: ${{ parameters.orgName }}
+          repoName: ${{ parameters.repoName }}
+          imageBuilder: ${{ parameters.imageBuilder }}
+          imageUrl: ${{ parameters.imageUrl }}
+          imageRepository: ${{ parameters.imageRepository }}
+          namespace: ${{ parameters.namespace }}
+          port: ${{ parameters.port }}
           sourceControl: github.com
 
     - id: publish
