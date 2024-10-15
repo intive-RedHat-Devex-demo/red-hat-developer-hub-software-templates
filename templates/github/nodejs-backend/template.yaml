@@ -56,94 +56,54 @@ spec:
           type: number
           default: 3000
           description: Override the port exposed for the application
-    - title: Provide information about the CI method
+     - title: Provide information about the ArgoCD deployment
       required:
-        - ci
+        - imageRepository
+        - namespace
+        - imageUrl
+        - hostUrl
       properties:
-        ci:
-          title: Select a CI method
+        imageRepository:
+          title: Select a registry
           type: string
-          description: This action will create a CI pipeline for your application based on chosen method
-          default: ../../../skeletons/github-actions/
+          default: quay.io
           enum:
-            - ../../../skeletons/github-actions/
-            - ../../../skeletons/tekton/
+            - quay.io
+            - image-registry.openshift-image-registry.svc:5000
           enumNames:
-            - GitHub Action
-            - Tekton
-      dependencies:
-        ci:
-          oneOf:
-            - properties:
-                # Show no extra properties when GitHub Actions is selected
-                ci:
-                  const: ../../../skeletons/github-actions/
-            - required:
-                - imageRepository
-                - namespace
-                - imageUrl
-              properties:
-                ci:
-                  const: ../../../skeletons/tekton/
-                imageRepository:
-                  title: Select a registry
-                  type: string
-                  default: quay.io
-                  enum:
-                    - quay.io
-                    - image-registry.openshift-image-registry.svc:5000
-                  enumNames:
-                    - Quay
-                    - Internal OpenShift Registry
-                imageUrl:
-                  title: Image URL
-                  type: string
-                  description: The Quay.io or OpenShift Image URL <REGISTRY>/<IMAGE_URL>/<REPO_NAME>
-                namespace:
-                  title: Namespace
-                  type: string
-                  description: The namespace for deploying resources
+            - Quay
+            - Internal OpenShift Registry
+        imageUrl:
+          title: Image URL
+          type: string
+          description: Enter the Quay.io or OpenShift Image URL <REGISTRY>/<IMAGE_URL>/<REPO_NAME>
+        namespace:
+          title: Namespace
+          type: string
+          default: system:janus-idp
+          description: The namespace for deploying resources
+        hostUrl:
+          title: Host URL
+          type: string
+          description: The external facing host URL
   steps:
-    - id: sourceCodeTemplate
-      name: Generating the Source Code Component
+    - id: manifestsTemplate
+      name: Generating the Manifests Component
       action: fetch:template
       input:
-        url: ./skeleton
+        url: ../../../skeletons/manifests/
         values:
           orgName: ${{ parameters.orgName }}
           repoName: ${{ parameters.repoName }}
           owner: ${{ parameters.owner }}
           system: ${{ parameters.system }}
-          applicationType: api
-          description: ${{ parameters.description }}
+          applicationType: gitops
+          description: Contains the ArgoCD manifests for ${{ parameters.repoName }}
           namespace: ${{ parameters.namespace }}
           imageUrl: ${{ parameters.imageUrl }}
-          imageBuilder: s2i-nodejs
+          hostUrl: ${{ parameters.hostUrl }}
           imageRepository: ${{ parameters.imageRepository }}
           port: ${{ parameters.port }}
-          ci: ${{ parameters.ci }}
-          sourceControl: github.com
-
-    - id: ciTemplate
-      name: Generating the CI Component
-      action: fetch:template
-      input:
-        url: ${{ parameters.ci }}
-        copyWithoutTemplating:
-          - .github/workflows/
-        values:
-          orgName: ${{ parameters.orgName }}
-          repoName: ${{ parameters.repoName }}
-          owner: ${{ parameters.owner }}
-          system: ${{ parameters.system }}
-          applicationType: api
-          description: ${{ parameters.description }}
-          namespace: ${{ parameters.namespace }}
-          imageUrl: ${{ parameters.imageUrl }}
-          imageBuilder: s2i-nodejs
-          imageRepository: ${{ parameters.imageRepository }}
-          port: ${{ parameters.port }}
-          ci: ${{ parameters.ci }}
           sourceControl: github.com
 
     - id: catalogTemplate
