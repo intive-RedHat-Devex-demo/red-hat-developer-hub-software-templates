@@ -188,7 +188,7 @@ spec:
       input:
         appName: ${{ parameters.repoName }}
         # Hardcoded value because this is kept as a secret on the server to allow forks to easily change the value
-        argoInstance: openshift-gitops
+        argoInstance: argoInstance1
         namespace: ${{ parameters.namespace }}
         repoUrl: ${{ steps.publish.output.remoteUrl }}
         labelValue: ${{ parameters.repoName }}
