@@ -254,6 +254,19 @@ spec:
         labelValue: ${{ parameters.repoName }}
         path: manifests/base
 
+  - id: createWebhook
+    action: github:webhook
+    name: Create GitHub Webhook
+    input:
+      repoUrl: ${{ steps.publish.output.remoteUrl }}
+      webhookUrl: https://webhook-nodejs-intive-redhat-app-el-demo-dev.apps.rosa.e5n9l5l2t8z7q0d.qnbq.p3.openshiftapps.com
+      events:
+        - push
+        - pull_request
+      active: true
+      contentType: json
+      insecureSsl: false
+      
     - id: publishPR
       name: Publish PR
       action: publish:github:pull-request
