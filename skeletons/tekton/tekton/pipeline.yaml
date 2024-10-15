@@ -3,10 +3,9 @@ kind: Pipeline
 metadata:
   name: ${{ values.repoName }}-pipeline
   namespace: ${{ values.namespace }}
-  annotations:
-    janus-idp.io/tekton: ${{ values.repoName }}
   labels:
     type: pipeline
+    janus-idp.io/tekton: ${{ values.repoName }}
 spec:
   params:
     - name: source-repo
