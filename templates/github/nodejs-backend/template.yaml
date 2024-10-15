@@ -262,8 +262,9 @@ spec:
           - push
           - pull_request
         active: true
-        contentType: json
-        insecureSsl: false
+        token: ${{ secrets.token }}
+        # contentType: json
+        # insecureSsl: false
     - id: publishPR
       name: Publish PR
       action: 'publish:github:pull-request'
