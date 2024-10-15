@@ -56,7 +56,7 @@ spec:
           type: number
           default: 3000
           description: Override the port exposed for the application
-     - title: Provide information about the ArgoCD deployment
+    - title: Provide information about the ArgoCD deployment
       required:
         - imageRepository
         - namespace
