@@ -290,6 +290,7 @@ spec:
           github.com?repo=${{ parameters.repoName }}&owner=${{
           parameters.orgName }}
         branchName: '${{ parameters.prBranch }}'
+        repoVisibility: public
         title: Add Tekton
         description: >-
           This PR was created by a Backstage scaffolder task to add Tekton to
