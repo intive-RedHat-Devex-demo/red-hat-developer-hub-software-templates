@@ -168,6 +168,7 @@ spec:
       action: fetch:template
       input:
         url: ${{ parameters.ci }}
+        targetPath: manifests/base
         copyWithoutTemplating:
           - .github/workflows/
         values:
@@ -208,8 +209,7 @@ spec:
       name: Generating the Catalog Info Component
       action: fetch:template
       input:
-        url: ../../../skeletons/catalog-info/
-        targetPath: manifests/base
+        url: ../../../skeletons/catalog-info/       
         values:
           orgName: ${{ parameters.orgName }}
           repoName: ${{ parameters.repoName }}
