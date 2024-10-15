@@ -5,10 +5,10 @@ metadata:
   namespace: ${{ values.namespace }}
   annotations:
     argocd.argoproj.io/hook: PostSync
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
-    janus-idp.io/tekton: ${{ values.repoName }}
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded  
   labels:
     tekton.dev/pipeline: ${{ values.repoName }}-pipeline
+    janus-idp.io/tekton: ${{ values.repoName }}
     type: pipeline
 spec:
   params:
