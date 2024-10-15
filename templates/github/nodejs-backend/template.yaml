@@ -185,26 +185,6 @@ spec:
           ci: ${{ parameters.ci }}
           sourceControl: github.com
 
-    - id: catalogTemplate
-      name: Generating the Catalog Info Component
-      action: fetch:template
-      input:
-        url: ../../../skeletons/catalog-info/
-        values:
-          orgName: ${{ parameters.orgName }}
-          repoName: ${{ parameters.repoName }}
-          owner: ${{ parameters.owner }}
-          system: ${{ parameters.system }}
-          applicationType: api
-          description: ${{ parameters.description }}
-          namespace: ${{ parameters.namespace }}
-          imageUrl: ${{ parameters.imageUrl }}
-          imageBuilder: s2i-nodejs
-          imageRepository: ${{ parameters.imageRepository }}
-          port: ${{ parameters.port }}
-          ci: ${{ parameters.ci }}
-          sourceControl: github.com
-  
     - id: manifestsTemplate
       name: Generating the Manifests Component
       action: fetch:template
@@ -224,6 +204,27 @@ spec:
           port: ${{ parameters.port }}
           sourceControl: github.com
 
+    - id: catalogTemplate
+      name: Generating the Catalog Info Component
+      action: fetch:template
+      input:
+        url: ../../../skeletons/catalog-info/
+        targetPath: manifests/base
+        values:
+          orgName: ${{ parameters.orgName }}
+          repoName: ${{ parameters.repoName }}
+          owner: ${{ parameters.owner }}
+          system: ${{ parameters.system }}
+          applicationType: api
+          description: ${{ parameters.description }}
+          namespace: ${{ parameters.namespace }}
+          imageUrl: ${{ parameters.imageUrl }}
+          imageBuilder: s2i-nodejs
+          imageRepository: ${{ parameters.imageRepository }}
+          port: ${{ parameters.port }}
+          ci: ${{ parameters.ci }}
+          sourceControl: github.com
+
     - id: publish
       name: Publishing to the Source Code Repository
       action: publish:github
@@ -241,15 +242,6 @@ spec:
         repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
         catalogInfoPath: /catalog-info.yaml
         
-    - id: publishPR
-      name: Publish PR
-      action: publish:github:pull-request
-      input:
-        repoUrl: github.com?repo=${{ parameters.repoName }}&owner=${{ parameters.orgName }}
-        branchName: ${{ parameters.prBranch }}
-        title: Add Tekton
-        description: This PR was created by a Backstage scaffolder task to add Tekton to the project.
-
     - id: createArgocdResources
       name: Create the ArgoCD Resources
       action: argocd:create-resources
@@ -261,6 +253,15 @@ spec:
         repoUrl: ${{ steps.publish.output.remoteUrl }}
         labelValue: ${{ parameters.repoName }}
         path: manifests/base
+
+    - id: publishPR
+      name: Publish PR
+      action: publish:github:pull-request
+      input:
+        repoUrl: github.com?repo=${{ parameters.repoName }}&owner=${{ parameters.orgName }}
+        branchName: ${{ parameters.prBranch }}
+        title: Add Tekton
+        description: This PR was created by a Backstage scaffolder task to add Tekton to the project.
 
   output:
     links:
