@@ -3,7 +3,7 @@ kind: Kustomization
 namespace: ${{ values.namespace }}
 resources: 
   - deployment.yaml
-  # - eventlistener.yaml
+  - eventlistener.yaml
   # - ingress.yaml
   - pipeline.yaml
   - pipelinerun.yaml
