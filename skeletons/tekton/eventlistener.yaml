@@ -4,7 +4,7 @@ metadata:
   name: ${{ values.repoName }}-el
   namespace: ${{ values.namespace }}
 labels:
-    janus-idp.io/tekton: ${{ values.repoName }}
+   janus-idp.io/tekton: ${{ values.repoName }}
 spec:
   serviceAccountName: pipeline
   triggers:
