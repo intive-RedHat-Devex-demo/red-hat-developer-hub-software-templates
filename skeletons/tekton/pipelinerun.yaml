@@ -9,6 +9,7 @@ metadata:
   labels:
     tekton.dev/pipeline: ${{ values.repoName }}-pipeline
     janus-idp.io/tekton: ${{ values.repoName }}
+    backstage.io/kubernetes-id: ${{ values.repoName }}
     type: pipeline
 spec:
   params:
