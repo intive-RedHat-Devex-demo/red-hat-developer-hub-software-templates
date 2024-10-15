@@ -14,7 +14,6 @@ spec:
   owner: janus-authors
   system: janus-idp
   type: service
-
   parameters:
     - title: Provide information about the new component
       required:
@@ -40,8 +39,8 @@ spec:
         owner:
           title: Owner
           type: string
-          ui:field: EntityPicker
-          ui:options:
+          'ui:field': EntityPicker
+          'ui:options':
             catalogFilter:
               kind:
                 - Group
@@ -49,12 +48,11 @@ spec:
         system:
           title: System
           type: string
-          ui:field: EntityPicker
-          ui:options:
+          'ui:field': EntityPicker
+          'ui:options':
             catalogFilter:
               kind:
                 - System
-    
     - title: Provide information about the CI method
       required:
         - ci
@@ -62,7 +60,9 @@ spec:
         ci:
           title: Select a CI method
           type: string
-          description: This action will create a CI pipeline for your application based on chosen method
+          description: >-
+            This action will create a CI pipeline for your application based on
+            chosen method
           default: ../../../skeletons/github-actions/
           enum:
             - ../../../skeletons/github-actions/
@@ -74,7 +74,6 @@ spec:
         ci:
           oneOf:
             - properties:
-                # Show no extra properties when GitHub Actions is selected
                 ci:
                   const: ../../../skeletons/github-actions/
             - required:
@@ -90,19 +89,20 @@ spec:
                   default: quay.io
                   enum:
                     - quay.io
-                    - image-registry.openshift-image-registry.svc:5000
+                    - 'image-registry.openshift-image-registry.svc:5000'
                   enumNames:
                     - Quay
                     - Internal OpenShift Registry
                 imageUrl:
                   title: Image URL
                   type: string
-                  description: The Quay.io or OpenShift Image URL <REGISTRY>/<IMAGE_URL>/<REPO_NAME>
+                  description: >-
+                    The Quay.io or OpenShift Image URL
+                    <REGISTRY>/<IMAGE_URL>/<REPO_NAME>
                 namespace:
                   title: Namespace
                   type: string
                   description: The namespace for deploying resources
-                  
     - title: Provide information about the CD deployment
       required:
         - imageRepository
@@ -120,18 +120,20 @@ spec:
           default: quay.io
           enum:
             - quay.io
-            - image-registry.openshift-image-registry.svc:5000
+            - 'image-registry.openshift-image-registry.svc:5000'
           enumNames:
             - Quay
             - Internal OpenShift Registry
         imageUrl:
           title: Image URL
           type: string
-          description: Enter the Quay.io or OpenShift Image URL <REGISTRY>/<IMAGE_URL>/<REPO_NAME>
+          description: >-
+            Enter the Quay.io or OpenShift Image URL
+            <REGISTRY>/<IMAGE_URL>/<REPO_NAME>
         namespace:
           title: Namespace
           type: string
-          default: system:janus-idp
+          default: 'system:janus-idp'
           description: The namespace for deploying resources
         hostUrl:
           title: Host URL
@@ -145,141 +147,139 @@ spec:
   steps:
     - id: sourceCodeTemplate
       name: Generating the Source Code Component
-      action: fetch:template
+      action: 'fetch:template'
       input:
         url: ./skeleton
         values:
-          orgName: ${{ parameters.orgName }}
-          repoName: ${{ parameters.repoName }}
-          owner: ${{ parameters.owner }}
-          system: ${{ parameters.system }}
+          orgName: '${{ parameters.orgName }}'
+          repoName: '${{ parameters.repoName }}'
+          owner: '${{ parameters.owner }}'
+          system: '${{ parameters.system }}'
           applicationType: api
-          description: ${{ parameters.description }}
-          namespace: ${{ parameters.namespace }}
-          imageUrl: ${{ parameters.imageUrl }}
+          description: '${{ parameters.description }}'
+          namespace: '${{ parameters.namespace }}'
+          imageUrl: '${{ parameters.imageUrl }}'
           imageBuilder: s2i-nodejs
-          imageRepository: ${{ parameters.imageRepository }}
-          port: ${{ parameters.port }}
-          ci: ${{ parameters.ci }}
+          imageRepository: '${{ parameters.imageRepository }}'
+          port: '${{ parameters.port }}'
+          ci: '${{ parameters.ci }}'
           sourceControl: github.com
-
     - id: ciTemplate
       name: Generating the CI Component
-      action: fetch:template
+      action: 'fetch:template'
       input:
-        url: ${{ parameters.ci }}
+        url: '${{ parameters.ci }}'
         targetPath: manifests/base
         copyWithoutTemplating:
           - .github/workflows/
         values:
-          orgName: ${{ parameters.orgName }}
-          repoName: ${{ parameters.repoName }}
-          owner: ${{ parameters.owner }}
-          system: ${{ parameters.system }}
+          orgName: '${{ parameters.orgName }}'
+          repoName: '${{ parameters.repoName }}'
+          owner: '${{ parameters.owner }}'
+          system: '${{ parameters.system }}'
           applicationType: api
-          description: ${{ parameters.description }}
-          namespace: ${{ parameters.namespace }}
-          imageUrl: ${{ parameters.imageUrl }}
+          description: '${{ parameters.description }}'
+          namespace: '${{ parameters.namespace }}'
+          imageUrl: '${{ parameters.imageUrl }}'
           imageBuilder: s2i-nodejs
-          imageRepository: ${{ parameters.imageRepository }}
-          port: ${{ parameters.port }}
-          ci: ${{ parameters.ci }}
+          imageRepository: '${{ parameters.imageRepository }}'
+          port: '${{ parameters.port }}'
+          ci: '${{ parameters.ci }}'
           sourceControl: github.com
-
     - id: manifestsTemplate
       name: Generating the Manifests Component
-      action: fetch:template
+      action: 'fetch:template'
       input:
         url: ../../../skeletons/manifests/
         values:
-          orgName: ${{ parameters.orgName }}
-          repoName: ${{ parameters.repoName }}
-          owner: ${{ parameters.owner }}
-          system: ${{ parameters.system }}
+          orgName: '${{ parameters.orgName }}'
+          repoName: '${{ parameters.repoName }}'
+          owner: '${{ parameters.owner }}'
+          system: '${{ parameters.system }}'
           applicationType: gitops
-          description: Contains the ArgoCD manifests for ${{ parameters.repoName }}
-          namespace: ${{ parameters.namespace }}
-          imageUrl: ${{ parameters.imageUrl }}
-          hostUrl: ${{ parameters.hostUrl }}
-          imageRepository: ${{ parameters.imageRepository }}
-          port: ${{ parameters.port }}
+          description: 'Contains the ArgoCD manifests for ${{ parameters.repoName }}'
+          namespace: '${{ parameters.namespace }}'
+          imageUrl: '${{ parameters.imageUrl }}'
+          hostUrl: '${{ parameters.hostUrl }}'
+          imageRepository: '${{ parameters.imageRepository }}'
+          port: '${{ parameters.port }}'
           sourceControl: github.com
-
     - id: catalogTemplate
       name: Generating the Catalog Info Component
-      action: fetch:template
+      action: 'fetch:template'
       input:
-        url: ../../../skeletons/catalog-info/       
+        url: ../../../skeletons/catalog-info/
         values:
-          orgName: ${{ parameters.orgName }}
-          repoName: ${{ parameters.repoName }}
-          owner: ${{ parameters.owner }}
-          system: ${{ parameters.system }}
+          orgName: '${{ parameters.orgName }}'
+          repoName: '${{ parameters.repoName }}'
+          owner: '${{ parameters.owner }}'
+          system: '${{ parameters.system }}'
           applicationType: api
-          description: ${{ parameters.description }}
-          namespace: ${{ parameters.namespace }}
-          imageUrl: ${{ parameters.imageUrl }}
+          description: '${{ parameters.description }}'
+          namespace: '${{ parameters.namespace }}'
+          imageUrl: '${{ parameters.imageUrl }}'
           imageBuilder: s2i-nodejs
-          imageRepository: ${{ parameters.imageRepository }}
-          port: ${{ parameters.port }}
-          ci: ${{ parameters.ci }}
+          imageRepository: '${{ parameters.imageRepository }}'
+          port: '${{ parameters.port }}'
+          ci: '${{ parameters.ci }}'
           sourceControl: github.com
-
     - id: publish
       name: Publishing to the Source Code Repository
-      action: publish:github
+      action: 'publish:github'
       input:
-        allowedHosts: ['github.com']
-        description: ${{ parameters.description }}
+        allowedHosts:
+          - github.com
+        description: '${{ parameters.description }}'
         repoVisibility: public
-        repoUrl: github.com?owner=${{ parameters.orgName }}&repo=${{ parameters.repoName }}
+        repoUrl: >-
+          github.com?owner=${{ parameters.orgName }}&repo=${{
+          parameters.repoName }}
         defaultBranch: main
-
     - id: register
       name: Registering the Catalog Info Component
-      action: catalog:register
+      action: 'catalog:register'
       input:
-        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        repoContentsUrl: '${{ steps.publish.output.repoContentsUrl }}'
         catalogInfoPath: /catalog-info.yaml
-        
     - id: createArgocdResources
       name: Create the ArgoCD Resources
-      action: argocd:create-resources
+      action: 'argocd:create-resources'
       input:
-        appName: ${{ parameters.repoName }}
-        # Hardcoded value because this is kept as a secret on the server to allow forks to easily change the value
+        appName: '${{ parameters.repoName }}'
         argoInstance: argoInstance1
-        namespace: ${{ parameters.namespace }}
-        repoUrl: ${{ steps.publish.output.remoteUrl }}
-        labelValue: ${{ parameters.repoName }}
+        namespace: '${{ parameters.namespace }}'
+        repoUrl: '${{ steps.publish.output.remoteUrl }}'
+        labelValue: '${{ parameters.repoName }}'
         path: manifests/base
-
-  - id: createWebhook
-    action: github:webhook
-    name: Create GitHub Webhook
-    input:
-      repoUrl: ${{ steps.publish.output.remoteUrl }}
-      webhookUrl: https://webhook-nodejs-intive-redhat-app-el-demo-dev.apps.rosa.e5n9l5l2t8z7q0d.qnbq.p3.openshiftapps.com
-      events:
-        - push
-        - pull_request
-      active: true
-      contentType: json
-      insecureSsl: false
-      
+    - id: createWebhook
+      action: 'github:webhook'
+      name: Create GitHub Webhook
+      input:
+        repoUrl: '${{ steps.publish.output.remoteUrl }}'
+        webhookUrl: >-
+          https://webhook-nodejs-intive-redhat-app-el-demo-dev.apps.rosa.e5n9l5l2t8z7q0d.qnbq.p3.openshiftapps.com
+        events:
+          - push
+          - pull_request
+        active: true
+        contentType: json
+        insecureSsl: false
     - id: publishPR
       name: Publish PR
-      action: publish:github:pull-request
+      action: 'publish:github:pull-request'
       input:
-        repoUrl: github.com?repo=${{ parameters.repoName }}&owner=${{ parameters.orgName }}
-        branchName: ${{ parameters.prBranch }}
+        repoUrl: >-
+          github.com?repo=${{ parameters.repoName }}&owner=${{
+          parameters.orgName }}
+        branchName: '${{ parameters.prBranch }}'
         title: Add Tekton
-        description: This PR was created by a Backstage scaffolder task to add Tekton to the project.
-
+        description: >-
+          This PR was created by a Backstage scaffolder task to add Tekton to
+          the project.
   output:
     links:
       - title: Open the Source Code Repository
-        url: ${{ steps.publish.output.remoteUrl }}
+        url: '${{ steps.publish.output.remoteUrl }}'
       - title: Open the Catalog Info Component
         icon: catalog
-        entityRef: ${{ steps.register.output.entityRef }}
+        entityRef: '${{ steps.register.output.entityRef }}'
