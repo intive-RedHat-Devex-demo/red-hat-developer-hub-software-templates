@@ -2,8 +2,8 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: nodejs-backend-template
-  title: Create a Node.js Backend application with a CI pipeline
-  description: Create a starter Node.js backend application with a CI pipeline
+  title: Create a Node.js Backend application with a CI/CD pipeline
+  description: Create a starter Node.js backend application with a CI/CD pipeline
   tags:
     - recommended
     - nodejs
