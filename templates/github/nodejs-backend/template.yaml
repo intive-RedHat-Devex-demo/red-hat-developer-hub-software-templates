@@ -22,7 +22,6 @@ spec:
         - repoName
         - owner
         - system
-        - port
       properties:
         orgName:
           title: Organization Name
