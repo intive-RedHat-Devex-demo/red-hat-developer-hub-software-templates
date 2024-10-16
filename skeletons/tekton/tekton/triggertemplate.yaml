@@ -31,7 +31,7 @@ spec:
         pipelineRef:
           name: ${{ values.repoName }}-pipeline
         # serviceAccountName: pipeline
-        timeout: 1h0m0s
+        # timeout: 1h0m0s
         workspaces:
           - name: source-folder
             volumeClaimTemplate:
