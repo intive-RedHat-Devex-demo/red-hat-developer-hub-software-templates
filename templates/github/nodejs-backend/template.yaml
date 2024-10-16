@@ -255,16 +255,14 @@ spec:
       action: 'github:webhook'
       name: Create GitHub Webhook
       input:
-        repoUrl: >-
-          github.com?owner=${{ parameters.orgName }}&repo=${{
-          parameters.repoName }}
+        repoUrl: github.com?owner=${{ parameters.orgName }}&repo=${{ parameters.repoName }}
         webhookUrl: >-
           webhook-${{ parameters.repoName }}-el-${{ parameters.namespace }}.apps.rosa.e5n9l5l2t8z7q0d.qnbq.p3.openshiftapps.com/api/webhook
         events:
           - push
           - pull_request
         active: true
-        token: ${{ secrets.token }}
+        token: ${{ secrets.TOKEN }}
         contentType: json
     # insecureSsl: false
     - id: publishPR
