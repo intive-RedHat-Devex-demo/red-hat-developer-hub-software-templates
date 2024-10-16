@@ -21,7 +21,7 @@ spec:
       value: ${{ values.imageRepository }}/${{ values.imageUrl }}/${{ values.repoName }}
   pipelineRef:
     name: ${{ values.repoName }}-pipeline
-  serviceAccountName: pipeline
+  # serviceAccountName: pipeline
   workspaces:
     - name: source-folder
       volumeClaimTemplate:
