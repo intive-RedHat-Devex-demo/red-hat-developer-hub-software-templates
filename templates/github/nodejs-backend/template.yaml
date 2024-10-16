@@ -262,7 +262,7 @@ spec:
           - push
           - pull_request
         active: true
-        token: ${{ secrets.TOKEN }}
+        # token: ${{ secrets.TOKEN }}
         contentType: json
     # insecureSsl: false
     - id: publishPR
