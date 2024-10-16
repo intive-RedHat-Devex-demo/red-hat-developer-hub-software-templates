@@ -4,6 +4,7 @@ metadata:
   name: ${{ values.repoName }}-el
   namespace: ${{ values.namespace }}
   labels:
+    janus-idp.io/tekton: ${{ values.repoName }}
     app.kubernetes.io/instance: ${{ values.repoName }}
     backstage.io/kubernetes-id: ${{ values.repoName }}
 spec:
