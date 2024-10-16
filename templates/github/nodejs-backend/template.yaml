@@ -251,20 +251,20 @@ spec:
         repoUrl: '${{ steps.publish.output.remoteUrl }}'
         labelValue: '${{ parameters.repoName }}'
         path: manifests/base
-    - id: createWebhook
-      action: 'github:webhook'
-      name: Create GitHub Webhook
-      input:
-        repoUrl: '${{ steps.publish.output.remoteUrl }}'
-        webhookUrl: >-
-          'webhook-${{ parameters.repoName }}-el-${{ parameters.namespace }}.apps.rosa.e5n9l5l2t8z7q0d.qnbq.p3.openshiftapps.com/api/webhook'
-        events:
-          - push
-          - pull_request
-        active: true
-        token: ${{ secrets.token }}
-        contentType: json
-        # insecureSsl: false
+    # - id: createWebhook
+    #   action: 'github:webhook'
+    #   name: Create GitHub Webhook
+    #   input:
+    #     repoUrl: '${{ steps.publish.output.remoteUrl }}'
+    #     webhookUrl: >-
+    #       'webhook-${{ parameters.repoName }}-el-${{ parameters.namespace }}.apps.rosa.e5n9l5l2t8z7q0d.qnbq.p3.openshiftapps.com/api/webhook'
+    #     events:
+    #       - push
+    #       - pull_request
+    #     active: true
+    #     token: ${{ secrets.token }}
+    #     contentType: json
+    # insecureSsl: false
     - id: publishPR
       name: Publish PR
       action: 'publish:github:pull-request'
