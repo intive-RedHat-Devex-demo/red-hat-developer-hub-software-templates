@@ -2,6 +2,11 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: ${{ values.repoName }}
+  labels:
+    app: ${{ values.repoName }}
+    argocd/app-name: ${{ values.repoName }}
+    argocd/app-selector: ${{ values.repoName }}
+    backstage.io/kubernetes-id: ${{ values.repoName }}
 spec:
   replicas: 1
   selector:
