@@ -140,7 +140,7 @@ spec:
           title: Host URL
           type: string
           description: The external facing host URL
-          default: ${{ parameters.repoName }}-${{ parameters.namespace }}
+          default: ${{ parameters.repoName }} - ${{ parameters.namespace }}
         port:
           title: Port
           type: number
