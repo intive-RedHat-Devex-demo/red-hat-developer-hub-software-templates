@@ -28,10 +28,6 @@ spec:
         repoName:
           title: Repository Name
           type: string
-        prBranch:
-          title: Pull Request Branch
-          type: string
-          default: add-tekton
         description:
           title: Description
           type: string
@@ -103,6 +99,10 @@ spec:
                   title: Namespace
                   type: string
                   description: The namespace for deploying resources
+                prBranch:
+                  title: Pull Request Branch
+                  type: string
+                  default: add-tekton
     - title: Provide information about the CD deployment
       required:
         - imageRepository
@@ -130,6 +130,7 @@ spec:
           description: >-
             Enter the Quay.io or OpenShift Image URL
             <REGISTRY>/<IMAGE_URL>/<REPO_NAME>
+          default: ${{ parameters.namespace }}
         namespace:
           title: Namespace
           type: string
