@@ -6,7 +6,7 @@ metadata:
   labels:
     janus-idp.io/tekton: ${{ values.repoName }}
 spec:
-  serviceAccountName: pipeline
+  # serviceAccountName: pipeline
   triggers:
     - bindings:
         - kind: ClusterTriggerBinding
