@@ -257,7 +257,7 @@ spec:
       input:
         repoUrl: '${{ steps.publish.output.remoteUrl }}'
         webhookUrl: >-
-          'https://openshift-gitops-server-openshift-gitops.apps.rosa.e5n9l5l2t8z7q0d.qnbq.p3.openshiftapps.com/api/webhook'
+          'https://webhook-'${{ parameters.repoName }}'-el-'${{ parameters.namespace }}'.apps.rosa.e5n9l5l2t8z7q0d.qnbq.p3.openshiftapps.com/api/webhook'
         events:
           - push
           - pull_request
