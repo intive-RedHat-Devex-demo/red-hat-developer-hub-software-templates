@@ -261,9 +261,10 @@ spec:
         events:
           - push
           - pull_request
-        active: true
+          - ping
+        # active: true
         # token: ${{ secrets.TOKEN }}
-        contentType: json
+        # contentType: json
     # insecureSsl: false
     - id: publishPR
       name: Publish PR
